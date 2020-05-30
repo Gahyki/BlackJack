@@ -5,10 +5,13 @@ csv_f = csv.reader(f)
 wincount = 0
 pushcount = 0
 
+#Loop over each Row
 for row in csv_f:
     rowstring = ''.join(row[15])
+    #count wins
     if rowstring == "Win":
         wincount = wincount + 1
+    #count losses
     if rowstring == "Push":
         pushcount = pushcount + 1
 
