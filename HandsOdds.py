@@ -19,6 +19,10 @@ for element in unique:
 
 print(unique)
 print(freq)
+
+for i in range(len(unique)):
+    print(str(unique[i]) + ": " + str((freq[i]/900000)*100) + "%")
+
 y_pos = np.arange(len(unique))
 plt.bar(y_pos, freq, align='center', alpha=0.5)
 plt.xticks(y_pos, unique)
