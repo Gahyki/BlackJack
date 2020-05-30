@@ -17,12 +17,13 @@ freq = []
 for element in unique:
     freq.append(hand.count(element))
 
+print(unique)
+print(freq)
 y_pos = np.arange(len(unique))
-
 plt.bar(y_pos, freq, align='center', alpha=0.5)
 plt.xticks(y_pos, unique)
-plt.ylabel('Usage')
-plt.title('Odds of each hand in blackjack')
+plt.ylabel('Frequency'.upper())
+plt.title('Odds of each hand in blackjack'.upper())
 
 plt.show()
 
