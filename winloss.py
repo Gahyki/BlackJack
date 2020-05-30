@@ -19,5 +19,5 @@ print("Total Pushes: ", pushcount)
 
 #Print Win Rate, Loss Rate, Push Rate
 print("Total Win Rate: ", wincount/900000)
-print("Total Loss Rate: ", (900000-wincount)/900000)
+print("Total Loss Rate: ", (900000-(wincount+pushcount)) / 900000)
 print("Total Push Rate: ", pushcount/900000)
