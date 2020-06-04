@@ -51,6 +51,7 @@ t9disobeywin = 0
 t9disobeytotal = 0
 
 for row in csv_f:
+
     #Convert winloss column to string
     winloss = ''.join(row[15])
 
@@ -61,6 +62,7 @@ for row in csv_f:
     playercard4 = ''.join(row[5])
     playercard5 = ''.join(row[6])
     initialplayersum = int(playercard1) + int(playercard2)
+    playerarray = [int(playercard1), int(playercard2), int(playercard3), int(playercard4), int(playercard5), initialplayersum]
 
     #Convert dealer cards to string
     dealercard1 = ''.join(row[8])
@@ -69,9 +71,18 @@ for row in csv_f:
     dealercard4 = ''.join(row[11])
     dealercard5 = ''.join(row[12])
     initialdealersum = int(dealercard1) + int(dealercard2)
+    dealerarray = [int(dealercard1), int(dealercard2), int(dealercard3), int(dealercard4), int(dealercard5)]
 
-    #print('dealercard1: ', dealercard1, 'dealercard2: ', dealercard2, ' initialdealersum: ',initialdealersum)
-    #print('playercard1: ', playercard1, 'playercard2: ', playercard2, ' initialplayersum: ',initialplayersum)
+    #Ensure player only hit a single time for this data.
+    counter = 0
+    if playerarray[2] != 0:
+        counter = counter + 1
+    if playerarray[3] != 0:
+        counter = counter + 1
+    if playerarray[4] != 0:
+        counter = counter + 1
+    if counter != 1:
+        continue
 
     #If dealersum is 2
     if initialdealersum == 2:
@@ -96,9 +107,9 @@ for row in csv_f:
                     t1disobeywin = t1disobeywin + 1
 
         #If 12<=playersum<=13
-        if initialplayersum <=13 and initialplayersum >=12:
+        elif initialplayersum <=13 and initialplayersum >=12:
             
-            #If player stayed
+            #If player hit
             if playercard3 != 0 or playercard4 != 0 or playercard5 != 0:
                 t1obeytotal = t1obeytotal + 1
 
@@ -106,13 +117,13 @@ for row in csv_f:
                 if winloss == "Win":
                     t1obeywin = t1obeywin + 1
 
-                #If player hit
-                else:
-                    t1disobeytotal = t1disobeytotal + 1
+            #If player stayed
+            elif playercard3 == 0 and playercard4 == 0 and playercard5 == 0:
+                t1disobeytotal = t1disobeytotal + 1
 
-                    #If player won
-                    if winloss == "Win":
-                        t1disobeywin = t1disobeywin + 1   
+                #If player won
+                if winloss == "Win":
+                    t1disobeywin = t1disobeywin + 1   
 
     #If dealersum is 3
     if initialdealersum == 3:
@@ -442,92 +453,119 @@ for row in csv_f:
                     if winloss == "Win":
                         t9disobeywin = t9disobeywin + 1   
 
+#Declare Variables to calculate final win total
+meanobeywin = 0
+meandisobeywin = 0
+
+#Print all results
 print('\nFor when the dealer was showing 2')
 if t1obeytotal != 0:
     print('obeytotal: ',t1obeytotal)
     print('obeywin: ',t1obeywin)
     print('obeywinrate: ', t1obeywin/t1obeytotal)
+    meanobeywin = meanobeywin + (t1obeywin/t1obeytotal)
 if t1disobeytotal !=0:
     print('disobeytotal: ',t1disobeytotal)
     print('disobeywin: ',t1disobeywin)
     print('disobeywinrate: ', t1disobeywin/t1disobeytotal)
+    meandisobeywin = meandisobeywin + (t1disobeywin/t1disobeytotal)
 
 print('\nFor when the dealer was showing 3')
 if t2obeytotal != 0:
     print('obeytotal: ',t2obeytotal)
     print('obeywin: ',t2obeywin)
     print('obeywinrate: ', t2obeywin/t2obeytotal)
+    meanobeywin = meanobeywin + (t2obeywin/t2obeytotal)
 if t2disobeytotal !=0:
     print('disobeytotal: ',t2disobeytotal)
     print('disobeywin: ',t2disobeywin)
     print('disobeywinrate: ', t2disobeywin/t2disobeytotal)
+    meandisobeywin = meandisobeywin + (t2disobeywin/t2disobeytotal)
 
 print('\nFor when the dealer was showing 4')
 if t3obeytotal != 0:
     print('obeytotal: ',t3obeytotal)
     print('obeywin: ',t3obeywin)
     print('obeywinrate: ', t3obeywin/t3obeytotal)
+    meanobeywin = meanobeywin + (t3obeywin/t3obeytotal)
 if t3disobeytotal !=0:
     print('disobeytotal: ',t3disobeytotal)
     print('disobeywin: ',t3disobeywin)
     print('disobeywinrate: ', t3disobeywin/t3disobeytotal)
+    meandisobeywin = meandisobeywin + (t3disobeywin/t3disobeytotal)
 
 print('\nFor when the dealer was showing 5')
 if t4obeytotal != 0:
     print('obeytotal: ',t4obeytotal)
     print('obeywin: ',t4obeywin)
     print('obeywinrate: ', t4obeywin/t4obeytotal)
+    meanobeywin = meanobeywin + (t4obeywin/t4obeytotal)
 if t4disobeytotal !=0:
     print('disobeytotal: ',t4disobeytotal)
     print('disobeywin: ',t4disobeywin)
     print('disobeywinrate: ', t4disobeywin/t4disobeytotal)
+    meandisobeywin = meandisobeywin + (t4disobeywin/t4disobeytotal)
 
 print('\nFor when the dealer was showing 6')
 if t5obeytotal != 0:
     print('obeytotal: ',t5obeytotal)
     print('obeywin: ',t5obeywin)
     print('obeywinrate: ', t5obeywin/t5obeytotal)
+    meanobeywin = meanobeywin + (t5obeywin/t5obeytotal)
 if t5disobeytotal !=0:
     print('disobeytotal: ',t5disobeytotal)
     print('disobeywin: ',t5disobeywin)
     print('disobeywinrate: ', t5disobeywin/t5disobeytotal)
+    meandisobeywin = meandisobeywin + (t5disobeywin/t5disobeytotal)
 
 print('\nFor when the dealer was showing 7')
 if t6obeytotal != 0:
     print('obeytotal: ',t6obeytotal)
     print('obeywin: ',t6obeywin)
     print('obeywinrate: ', t6obeywin/t6obeytotal)
+    meanobeywin = meanobeywin + (t6obeywin/t6obeytotal)
 if t6disobeytotal !=0:
     print('disobeytotal: ',t6disobeytotal)
     print('disobeywin: ',t6disobeywin)
     print('disobeywinrate: ', t6disobeywin/t6disobeytotal)
+    meandisobeywin = meandisobeywin + (t6disobeywin/t6disobeytotal)
 
 print('\nFor when the dealer was showing 8')
 if t7obeytotal != 0:
     print('obeytotal: ',t7obeytotal)
     print('obeywin: ',t7obeywin)
     print('obeywinrate: ', t7obeywin/t7obeytotal)
+    meanobeywin = meanobeywin + (t7obeywin/t7obeytotal)
 if t7disobeytotal !=0:
     print('disobeytotal: ',t7disobeytotal)
     print('disobeywin: ',t7disobeywin)
     print('disobeywinrate: ', t7disobeywin/t7disobeytotal)
+    meandisobeywin = meandisobeywin + (t7disobeywin/t7disobeytotal)
 
 print('\nFor when the dealer was showing 9')
 if t8obeytotal != 0:
     print('obeytotal: ',t8obeytotal)
     print('obeywin: ',t8obeywin)
     print('obeywinrate: ', t8obeywin/t8obeytotal)
+    meanobeywin = meanobeywin + (t8obeywin/t8obeytotal)
 if t8disobeytotal !=0:
     print('disobeytotal: ',t8disobeytotal)
     print('disobeywin: ',t8disobeywin)
     print('disobeywinrate: ', t8disobeywin/t8disobeytotal)
+    meandisobeywin = meandisobeywin + (t8disobeywin/t8disobeytotal)
 
 print('\nFor when the dealer was showing 10')
 if t9obeytotal != 0:
     print('obeytotal: ',t9obeytotal)
     print('obeywin: ',t9obeywin)
     print('obeywinrate: ', t9obeywin/t9obeytotal)
+    meanobeywin = meanobeywin + (t9obeywin/t9obeytotal)
 if t9disobeytotal !=0:
     print('disobeytotal: ',t9disobeytotal)
     print('disobeywin: ',t9disobeywin)
     print('disobeywinrate: ', t9disobeywin/t9disobeytotal)
+    meandisobeywin = meandisobeywin + (t9disobeywin/t9disobeytotal)
+
+print('\nExpected Values: ')
+print('meanwinrate(if decision tables OBEYED): ', (meanobeywin/9))
+print('meanwinrate(if decision tables DISOBEYED): ', (meandisobeywin/9))
