@@ -1,4 +1,5 @@
 import csv
+import math
 
 f = open('blkjckhands.csv')
 csv_f = csv.reader(f)
@@ -49,6 +50,11 @@ t9obeywin = 0
 t9obeytotal = 0
 t9disobeywin = 0
 t9disobeytotal = 0
+
+t10obeywin = 0
+t10obeytotal = 0
+t10disobeywin = 0
+t10disobeytotal = 0
 
 for row in csv_f:
 
@@ -453,6 +459,47 @@ for row in csv_f:
                     if winloss == "Win":
                         t9disobeywin = t9disobeywin + 1   
 
+    #If dealersum is 11
+        if initialdealersum == 10:
+
+            #If 17<=playersum<=21
+            if initialplayersum<=21 and initialplayersum>=17:
+
+                #If player stayed
+                if playercard3 == 0 and playercard4 == 0 and playercard5 == 0:
+                    t10obeytotal = t10obeytotal + 1
+
+                    #If player won
+                    if winloss == "Win":
+                        t10obeywin = t10obeywin + 1
+
+                #If player hit
+                else:
+                    t10disobeytotal = t10disobeytotal + 1
+
+                    #If player won
+                    if winloss == "Win":
+                        t10disobeywin = t10disobeywin + 1
+
+            #If 12<=playersum<=16
+            if initialplayersum <=17 and initialplayersum >=12:
+                
+                #If player hit
+                if playercard3 != 0 or playercard4 != 0 or playercard5 != 0:
+                    t10obeytotal = t10obeytotal + 1
+
+                    #If player won
+                    if winloss == "Win":
+                        t10obeywin = t10obeywin + 1
+
+                    #If player stayed
+                    else:
+                        t10disobeytotal = t10disobeytotal + 1
+
+                        #If player won
+                        if winloss == "Win":
+                            t10disobeywin = t10disobeywin + 1 
+
 #Declare Variables to calculate final win total
 meanobeywin = 0
 meandisobeywin = 0
@@ -566,6 +613,54 @@ if t9disobeytotal !=0:
     print('disobeywinrate: ', t9disobeywin/t9disobeytotal)
     meandisobeywin = meandisobeywin + (t9disobeywin/t9disobeytotal)
 
-print('\nExpected Values: ')
-print('meanwinrate(if decision tables OBEYED): ', (meanobeywin/9))
-print('meanwinrate(if decision tables DISOBEYED): ', (meandisobeywin/9))
+print('\nFor when the dealer was showing 11')
+if t10obeytotal != 0:
+    print('obeytotal: ',t10obeytotal)
+    print('obeywin: ',t10obeywin)
+    print('obeywinrate: ', t10obeywin/t10obeytotal)
+    meanobeywin = meanobeywin + (t10obeywin/t10obeytotal)
+if t10disobeytotal !=0:
+    print('disobeytotal: ',t10disobeytotal)
+    print('disobeywin: ',t10disobeywin)
+    print('disobeywinrate: ', t10disobeywin/t10disobeytotal)
+    meandisobeywin = meandisobeywin + (t10disobeywin/t10disobeytotal)
+
+#Calculating means
+meanobeywin = meanobeywin/10
+meandisobeywin = meandisobeywin/10
+
+#Calculating Variances
+obeyvar = (
+    (math.pow(meanobeywin-(t1obeywin/t1obeytotal),2) + 
+    math.pow(meanobeywin-(t2obeywin/t2obeytotal),2) + 
+    math.pow(meanobeywin-(t3obeywin/t3obeytotal),2) + 
+    math.pow(meanobeywin-(t4obeywin/t4obeytotal),2) + 
+    math.pow(meanobeywin-(t5obeywin/t5obeytotal),2) + 
+    math.pow(meanobeywin-(t6obeywin/t6obeytotal),2) + 
+    math.pow(meanobeywin-(t7obeywin/t7obeytotal),2) + 
+    math.pow(meanobeywin-(t8obeywin/t8obeytotal),2) + 
+    math.pow(meanobeywin-(t9obeywin/t9obeytotal),2) + 
+    math.pow(meanobeywin-(t10obeywin/t10obeytotal),2))
+    /10
+)
+disobeyvar = (
+    (math.pow(meandisobeywin-(t1disobeywin/t1disobeytotal),2) + 
+    math.pow(meandisobeywin-(t2disobeywin/t2disobeytotal),2) + 
+    math.pow(meandisobeywin-(t3disobeywin/t3disobeytotal),2) + 
+    math.pow(meandisobeywin-(t4disobeywin/t4disobeytotal),2) + 
+    math.pow(meandisobeywin-(t5disobeywin/t5disobeytotal),2) + 
+    math.pow(meandisobeywin-(t6disobeywin/t6disobeytotal),2) + 
+    math.pow(meandisobeywin-(t7disobeywin/t7disobeytotal),2) + 
+    math.pow(meandisobeywin-(t8disobeywin/t8disobeytotal),2) + 
+    math.pow(meandisobeywin-(t9disobeywin/t9disobeytotal),2) + 
+    math.pow(meandisobeywin-(t10disobeywin/t10disobeytotal),2))
+    /10
+)
+
+#Calculating Standard Deviations
+obeystd = math.sqrt(obeyvar)
+disobeystd = math.sqrt(disobeyvar)
+
+print('\nFinal Results: ')
+print('meanwinrate(if decision tables OBEYED): ', meanobeywin, " Variance: ", obeyvar," Standard Deviation: ", obeystd)
+print('meanwinrate(if decision tables DISOBEYED): ', meandisobeywin, " Variance: ", disobeyvar," Standard Deviation: ", disobeystd)
