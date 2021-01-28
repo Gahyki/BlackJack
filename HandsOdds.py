@@ -8,7 +8,7 @@ next(reader)
 hand = []
 
 for column in reader:
-    hand.append(int(column[7]))
+    hand.append(int(column[2]) + int(column[3]) + int(column[4]) + int(column[5]))
 
 # set() -> get all unique values of array
 unique = sorted(set(hand))
